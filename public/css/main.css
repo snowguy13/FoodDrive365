@@ -4,6 +4,10 @@ body {
   margin: 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background-color: #4680c6;
+  background-image: linear-gradient( to bottom, #284671, #4680c6 );
+  background-image: -webkit-linear-gradient( to bottom, #284671, #4680c6 );
+  background-image: -moz-linear-gradient( to bottom, #284671, #4680c6 );
+  background-image: -o-linear-gradient( to bottom, #284671, #4680c6 );
 }
 
 .header {
@@ -104,8 +108,8 @@ body {
 }
 
 .main {
-  background-image: linear-gradient( to bottom, #284671, #4680c6 );
+  /*background-image: linear-gradient( to bottom, #284671, #4680c6 );
   background-image: -webkit-linear-gradient( to bottom, #284671, #4680c6 );
   background-image: -moz-linear-gradient( to bottom, #284671, #4680c6 );
-  background-image: -o-linear-gradient( to bottom, #284671, #4680c6 );
+  background-image: -o-linear-gradient( to bottom, #284671, #4680c6 );*/
 }
