@@ -8,6 +8,7 @@ body {
   background-image: -webkit-linear-gradient( to bottom, #284671, #4680c6 );
   background-image: -moz-linear-gradient( to bottom, #284671, #4680c6 );
   background-image: -o-linear-gradient( to bottom, #284671, #4680c6 );
+  background-repeat: repeat-x;
 }
 
 .header {
@@ -24,20 +25,30 @@ body {
   padding: 0;
 }
 
-.top-nav .nav-link {
+.top-nav .nav-item {
   transition-property: color, background-color;
   transition-duration: 0.3s;
-  cursor: pointer;
+  cursor: default;
   position: relative;
   display: inline-block;
-  padding: 6px 12px;
   margin: 0 20px;
   font-size: 24px;
   font-weight: 300;
 }
 
-.top-nav .nav-link::before,
-.top-nav .nav-link::after {
+.top-nav .nav-item.no-link {
+  padding: 6px 12px;
+}
+
+.top-nav .nav-link {
+  display: inline-block;
+  padding: 6px 12px;
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.top-nav .nav-item::before,
+.top-nav .nav-item::after {
   transition: border-color 0.3s;
   content: "";
   position: absolute;
@@ -46,26 +57,26 @@ body {
   border-top: 45px solid white;
 }
 
-.top-nav .nav-link::before {
+.top-nav .nav-item::before {
   left: -10px;
   border-right: 10px solid transparent;
 }
 
-.top-nav .nav-link::after {
+.top-nav .nav-item::after {
   right: -10px;
   border-left: 10px solid transparent;
 }
 
-.top-nav .nav-link:hover {
+.top-nav .nav-item:hover {
   color: white;
   background-color: #1c314f;
 }
 
-.top-nav .nav-link:hover::before {
+.top-nav .nav-item:hover::before {
   border-right-color: #1c314f;
 }
 
-.top-nav .nav-link:hover::after {
+.top-nav .nav-item:hover::after {
   border-left-color: #1c314f;
 }
 
@@ -73,7 +84,6 @@ body {
   transition-property: visibility, opacity;
   transition-duration: 0.3s;
   transition-delay: 0s;
-  cursor: default;
   visibility: hidden;
   opacity: 0;
   position: absolute;
@@ -89,7 +99,7 @@ body {
   box-shadow: 0 0 8px #1c314f;
 }
 
-.top-nav .nav-link:hover .drop-menu {
+.top-nav .nav-item:hover .drop-menu {
   transition-delay: 0.5s;
   visibility: visible;
   opacity: 1;
@@ -97,9 +107,16 @@ body {
 
 .top-nav .menu-item {
   transition: background-color 0.3s;
-  cursor: pointer;
   display: block;
   margin: 2px 0;
+}
+
+.top-nav .menu-item.no-link {
+  padding: 3px 10px;
+}
+
+.top-nav .menu-item .nav-link {
+  display: block;
   padding: 3px 10px;
 }
 

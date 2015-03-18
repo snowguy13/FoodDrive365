@@ -3,7 +3,9 @@
 <head>
   <title>Food Drive 365</title>
   <link rel="stylesheet" href="css/main.css" />
-  <script src="js/main.js"></script>
+  <script src="js/jspm-packages/system.js"></script>
+  <script src="config.js"></script>
+  <script>System.import("main");</script>
 </head>
 <body>
   <!-- begin header -->
@@ -19,26 +21,27 @@
     </div>
     <nav class="top-nav">
       <ul>
-        <li class="nav-link">
-          About FD365
+        <li class="nav-item">
+          <a href="/about">About FD365</a>
           <ul class="drop-menu">
-            <li class="menu-item">Why We Exist</li>
-            <li class="menu-item">Who We Help</li>
-            <li class="menu-item">How It Works</li>
-            <li class="menu-item">Goals and Mission</li>
-            <li class="menu-item">History</li>
-            <li class="menu-item">How To Help</li>
+            <li class="menu-item"><a href="/about/why-we-exist">Why We Exist</a></li>
+            <li class="menu-item"><a href="/about/who-we-help">Who We Help</a></li>
+            <li class="menu-item"><a href="/about/how-it-works">How It Works</a></li>
+            <li class="menu-item"><a href="/about/goals-and-mission">Goals and Mission</a></li>
+            <li class="menu-item"><a href="/about/history">History</a></li>
+            <li class="menu-item"><a href="/about/how-to-help">How To Help</a></li>
           </ul>
         </li>
-        <li class="nav-link">Donate</li>
-        <li class="nav-link">Locations</li>
-        <li class="nav-link">Partners</li>
+        <li class="nav-item"><a href="/donate">Donate</a></li>
+        <li class="nav-item"><a href="/locations">Locations</a></li>
+        <li class="nav-item">Partners</li>
       </ul>
     </nav>
   </header>
 
   <!-- begin main -->
   <main class="main">
+    <div id="fragment-container"></div>
   </main>
 
   <!-- begin footer -->

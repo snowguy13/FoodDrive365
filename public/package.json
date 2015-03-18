@@ -1,0 +1,11 @@
+{
+  "jspm": {
+    "directories": {
+      "lib": "./js",
+      "packages": "./js/jspm-packages"
+    },
+    "dependencies": {
+      "jquery": "github:components/jquery@^2.1.3"
+    }
+  }
+}
