@@ -1,0 +1,42 @@
+<script data-fragment-callbacks>
+fragment.data = {
+  full: true // add a class to the body to fill the screen (vs. the default scrolling)
+};
+
+fragment.onShow = function( html, data ) {
+  html.find("#location-input").val( data.location );
+};
+</script>
+<section class="section split split-2">
+<div class="location-search">
+  <input id="location-input" class="big-input" type="text" placeholder="Enter search location" />
+  <ul class="list block-list location-list">
+    <li class="location">
+      <h4 class="name">HyVee Stores</h3>
+      <h5 class="address">123 Food Street, Ames, IA</h4>
+    </li>
+    <li class="location">
+      <h4 class="name">Sandy's Kitchen</h3>
+      <h5 class="address">224 Ash Avenue, Ames, IA</h4>
+    </li>
+    <li class="location">
+      <h4 class="name">HyVee Stores</h3>
+      <h5 class="address">123 Food Street, Ames, IA</h4>
+    </li>
+    <li class="location">
+      <h4 class="name">Sandy's Kitchen</h3>
+      <h5 class="address">224 Ash Avenue, Ames, IA</h4>
+    </li>
+    <li class="location">
+      <h4 class="name">HyVee Stores</h3>
+      <h5 class="address">123 Food Street, Ames, IA</h4>
+    </li>
+    <li class="location">
+      <h4 class="name">Sandy's Kitchen</h3>
+      <h5 class="address">224 Ash Avenue, Ames, IA</h4>
+    </li>
+  </ul>
+</div>
+<div>
+</div>
+</section>

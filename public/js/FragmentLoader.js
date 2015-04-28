@@ -1,43 +1,216 @@
-var $ = require("jquery");
+var $     = require("jquery"),
+    React = require("react"),
+    loadFragment;
 
-// a cache of the fragments that have been loaded already
-var loaded = {};
+// About Fragments:
+//   Place fragments in the 'frag/' folder, and USE THE EXTENSION .htm!
+//   Fragments should contain whatever content would regularly go inside the <main> element.
+//   Optionally, include a script that defines a function named 'initialize' to perform some
+//     action based on data that is passed in (the nature of the data is determined by the caller).
+//     For example, the fragment 'location.htm' defines 'initialize' to react to zip-code input.
 
-// creates a callback to pass as the success parameter to a $.ajax call
-var successCallback = function( name, done ) {
-  return function _FragmentLoader_successCallback( htmlText, status, xhr ) {
-    var html = $( htmlText );
+// Loads a fragment
+//   String path      : The path to the fragment to load, WITHOUT the prefix 'frag/' and suffix '.htm'
+//   Function success : Some action to perform once the fragment has been successfully loaded
+//   Function error   : Some action to perform if the fragment loading fails
+loadFragment = function( path, success, error ) {
+  return $.ajax({
+    type:     "GET",
+    url:      "/frag/" + path + ".htm",
+    success:  success,
+    error:    error
+  });
+};
 
-    // remember this result (if not already loaded)
-    if( !( name in loaded ) ) {
-      loaded[ name ] = html;
+
+
+var Fragment = function( path, onSuccess, onFail ) {
+  // save the path to the fragment
+  this.path = path;
+  //this.html       is used to store jQuery representation of the fragment
+  //this._callbacks is used to store fragment specific loading operations
+  
+  // begin loading
+  this.load( onSuccess, onFail );
+};
+
+Fragment.prototype = {
+  load: function( onSuccess, onFail ) {
+    this.html = undefined;
+
+    return this.xhr = loadFragment( 
+      this.path, 
+      this._onSuccess( onSuccess ),
+      onFail 
+    );
+  },
+
+  isLoaded: function() {
+    return this.html !== undefined;
+  },
+
+  _onSuccess: function( callback ) {
+    var _this = this;
+
+    return function( data ) {
+      var html = _this.html = $( data ),
+          cb;
+
+      // find event callbacks
+      _this._findCallbacks();
+
+      // invoke the fragment's onLoad callback, if it was given
+      if( cb = _this._callbacks.onLoad ) {
+        cb( html );
+      }
+
+      // call each of the invoked callbacks
+      /*( isArray( callbacks ) ? callbacks : [ callbacks ] ).forEach(function( cb ) {
+        cb( html );
+      });*/
+      callback( _this );
+    };
+  },
+
+  _findCallbacks: function() {
+    var callbacksScript = this.html.filter(function() { return $(this).is("[data-fragment-callbacks]"); }),
+        evalString = 
+          "(function( $, React, fragment ) {"
+        +   (callbacksScript.text() || "")
+        +   "return fragment;"
+        + "})( $, React, {} )";
+    
+    // search for the callbacks (if any are given)
+    this._callbacks = eval( evalString );
+
+    // remove the callbacks script
+    //console.log("About to remove", callbacksScript);
+    callbacksScript.remove();
+  },
+  
+  invokeCallback: function( which, data ) {
+    var cb = this._callbacks[ which ];
+    //console.log("About to invoke ", which, " with data ", data);
+    cb && cb( this.html, data || {} );
+  }
+};
+
+// Valid options: (* next to value means default)
+//   noCache    *false    Every loaded fragment will be cached. This is default.
+//              true      No loaded fragments will be cached. In other words, every call to
+//                        'loadFragment' will result in an XHR. Not recommended.
+//              <Array>   A list of fragments paths that should not be cached.
+//   retryLoad  *false    Same as 0. Failed fragment loads are not retried automatically.
+//              <Number>  An integer representing how many times the loader should attempt
+//                        to request a fragment if the original request fails.
+//   
+var FragmentContainer = function( container, options ) {
+  var opt;
+  
+  this.element  = $( container ); // jQuery reference to the containing element
+  this._options = options = $.extend({}, options); // a reference to options for this container
+  this._loaded  = {};             // a private cache of already loaded fragments
+  this._current = null;           // a reference to the currently loaded fragment
+
+  // make sure the options are valid
+  /*opt = options.noCache;
+  options.noCache = ( opt === true || isArray( opt ) ) ? opt : [];
+
+  opt = options.fadeDuration;
+  options.fadeDuration = ( isNaN( opt ) ? 300 : Math.floor( opt ) );*/
+
+  options.notFoundPath = options.notFoundPath || "not-found";
+};
+
+FragmentContainer.prototype = {
+  _loadSuccess: function( path, onSuccess ) {
+    var _this = this;
+
+    return function( fragment ) {
+      // cache the fragment
+      _this._loaded[ path ] = fragment;
+
+      // then call the given handler
+      onSuccess && onSuccess( fragment );
+    };
+  },
+
+  _load: function( path, onSuccess, onFail ) {
+    var loaded = this._loaded;
+    
+    if( path in this._loaded ) {
+      // if it's already loaded, just return it
+      onSuccess( this._loaded[ path ] );
+    } else {
+      // otherwise, we have to load it -- try to do so now
+      fragment = new Fragment( 
+        path, 
+        this._loadSuccess( path, onSuccess ), 
+        onFail
+      );
+    }
+  },
+
+  _showFragment: function( toFragment, data ) {
+    // remove the current fragment
+    if( this._current ) {
+      this._current.html.detach();
     }
 
-    // call the given done function with the parsed response xml and no error
-    done( html, undefined );
-  };
-};
+    // add the next one
+    this.element.append( (this._current = toFragment).html );
 
-// creates a callback to pass as the erro parameter to a $.ajax call
-var errorCallback = function( done ) {
-  return function _FragmentLoader_errorCallback( xhr, status, error ) {
-    // call the given done function with no data and the given error
-    done( undefined, status + ": " + error );
+    // and call its onShow function with relevant info
+    toFragment.invokeCallback("onShow", data );
+  },
+  
+  // creates a function to be passed as the onSuccess argument of a _load() call
+  _showSuccess: function( data, onSuccess ) {
+    var _this = this;
+
+    return function( fragment ) {
+      // show the fragment
+      _this._showFragment( fragment, data );
+
+      // call the given handler
+      onSuccess && onSuccess( fragment._callbacks.data ); // TO DO! Fix _callbacks.data to be just _userData
+    };
+  },
+
+  // creates a function to be passed as the onFail argument of a _load() call
+  _showFail: function( path, onFail ) {
+    var _this = this;
+
+    return function() {
+      // show the not found page
+      _this.show( _this._options.notFoundPath, { path: path } );
+
+      // call the given error handler
+      onFail && onFail();
+    };
+  },
+
+  show: function( path, data, onSuccess, onFail ) {
+    // data is optional, account for that
+    if( typeof data === "function" ) {
+      onFail    = onSuccess;
+      onSuccess = data;
+      data      = {};
+    }
+
+    if( this._current && (this._current.path === path) ) {
+      // do nothing if the requested fragment is already loaded
+      this._current.invokeCallback("onShow", data );
+      onSuccess && onSuccess( this._current._callbacks.data );
+    } else {
+      // load the given path
+      this._load( 
+        path, 
+        this._showSuccess( data, onSuccess ),
+        this._showFail( path, onFail )
+      );
+    }
   }
 };
 
-// export the loading function
-module.exports = function loadFragment( name, done ) {
-  if( name in loaded ) {
-    // already cached, just return the cached version
-    done( loaded[ name ], undefined );
-  } else {
-    // otherwise, load it
-    $.ajax({
-      type:     "GET",
-      url:      "/frag/" + name + ".htm",
-      success:  successCallback( name, done ),
-      error:    errorCallback( done )
-    });
-  }
-};
+module.exports = FragmentContainer;

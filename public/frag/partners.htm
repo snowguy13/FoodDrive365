@@ -1,0 +1,55 @@
+<script data-fragment-callbacks>
+var partners = [
+  {
+    "name":  "Collegiate United Methodist Church",
+    "url":   "http://www.cwames.org/",
+    "image": "image/partner/cwames.jpg",
+    "description": "The Church and Wesley Center aims to aid individuals on their path to spiritual growth. "
+                 + "It is committed to inspiring relationships among various people, utilizing its resources "
+                 + "to serve those who have a greater need for them, and affirming the unique value of every "
+                 + "individual."
+  },
+  {
+    "name":  "Tau Kappa Epsilon (Epsilon Chapter)",
+    "url":   "http://tkerush.com/",
+    "image": "/image/partner/tke.png",
+    "description": "Founded in 1915 and the fifth chapter of its national organization, the Epsilon Chapter "
+                 + "of Tau Kappa Epsilon is active in its community and respected among its fellow Chapters "
+                 + "for its consistently strong performance in academics, service, and leadership both on the "
+                 + "Iowa State campus and in the Ames community."
+  },{
+    "name":  "Collegiate United Methodist Church",
+    "url":   "http://www.cwames.org/",
+    "image": "image/partner/cwames.jpg",
+    "description": "The Church and Wesley Center aims to aid individuals on their path to spiritual growth. "
+                 + "It is committed to inspiring relationships among various people, utilizing its resources "
+                 + "to serve those who have a greater need for them, and affirming the unique value of every "
+                 + "individual."
+  },
+  {
+    "name":  "Tau Kappa Epsilon (Epsilon Chapter)",
+    "url":   "http://tkerush.com/",
+    "image": "/image/partner/tke.png",
+    "description": "Founded in 1915 and the fifth chapter of its national organization, the Epsilon Chapter "
+                 + "of Tau Kappa Epsilon is active in its community and respected among its fellow Chapters "
+                 + "for its consistently strong performance in academics, service, and leadership both on the "
+                 + "Iowa State campus and in the Ames community."
+  }
+];
+
+fragment.onLoad = function( html ) {
+  System.import("react:PartnerGrid").then(function( PartnerGrid ) {
+    React.render(
+      React.createElement( PartnerGrid, { partners: partners } ),
+      html.find("#partner-grid-container")[ 0 ]
+    );
+  });
+};
+</script>
+<section class="section">
+<h1 class="page-header">Our Partners</h1>
+<h3 class="page-subheader">We couldn't do our work without them...</h3>
+<div id="partner-grid-container">
+  
+</ul>
+</section>
