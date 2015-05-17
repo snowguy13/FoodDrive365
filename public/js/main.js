@@ -84,9 +84,9 @@ $(function() {
   loader = new FragmentLoader( $("#fragment-container") );
 
   // initially, show the 'index' fragment (last 'true' is to prevent animation)
-  INITIAL_FRAGMENT = INITIAL_FRAGMENT || "index";
+  INITIAL_FRAGMENT = INITIAL_FRAGMENT || window.location.hash.substring( 1 ) || "index";
   //showFragment( INITIAL_FRAGMENT, false, true );
-  loader.show( INITIAL_FRAGMENT || "index", function() {
+  loader.show( INITIAL_FRAGMENT, function() {
     history.replaceState(
       { fragment: INITIAL_FRAGMENT },
       "",
@@ -99,8 +99,8 @@ $(function() {
     var state = ev.state;
 
     loader.show( state.fragment || "index", state.data, function( data ) {
-      // add / remove "full" class as necessary
-      $("body")[ data && data.full ? "addClass" : "removeClass" ]("full");
+      // add / remove body classes
+      $("body").attr("class", data.bodyClass || "");
     });
   });
 
@@ -127,14 +127,15 @@ $(function() {
       try { data = JSON.parse( target.dataset.fragmentData ); } catch( e ) {}
     
       // show the fragment (and push state)
-      loader.show( href, data, function( data ) {
+      loader.show( href, data, function( fragData ) {
         // on success, push the fragment path into state (if we're not already at that state)
         if( history.state.fragment !== href ) {
           history.pushState( { fragment: href }, "", "/#" + href );
         }
 
         // add / remove "full" class as necessary
-        $("body")[ data && data.full ? "addClass" : "removeClass" ]("full");
+        $("body").attr("class", fragData.bodyClass || "");
+        console.log( fragData );
       }, function() {
         // otherwise, push not-found if we're not there already
         if( history.state.fragment !== "not-found" ) {
@@ -152,7 +153,8 @@ $(function() {
   });
 
   // prevent menus from closing if child inputs are active
-  $(".top-nav input").each(function() {
+  $(".top-nav")
+  .find("input").each(function() {
     var input = $(this),
         parent = input.closest(".nav-item");
 
@@ -179,6 +181,20 @@ $(function() {
         input.blur();
       }
     });
+  })
+  .end().find(".nav-item").each(function() {
+    var t = $(this),
+        m = t.find(".drop-menu");
+    
+    // quit now if no menu
+    if( !m.length ) return;
+
+    // otherwise, position the menu properly
+    m.css("left", (-1 * (200 - t.outerWidth()) / 2) + "px");
+  })
+
+  $(".nav-button").click(function() {
+    $( document.body ).toggleClass("show-nav");
   });
 
   // assign designated function for #nav-location-input
@@ -201,4 +217,7 @@ $(function() {
   $( document.body ).click(function( ev ) { 
     hidePopups( ev.target );
   });
+
+  // show initial fragment, if any
+  window.location.href.split("#");
 });

@@ -5,9 +5,9 @@ var $     = require("jquery"),
 // About Fragments:
 //   Place fragments in the 'frag/' folder, and USE THE EXTENSION .htm!
 //   Fragments should contain whatever content would regularly go inside the <main> element.
-//   Optionally, include a script that defines a function named 'initialize' to perform some
+//   Optionally, include a script that defines a function named 'onShow' to perform some
 //     action based on data that is passed in (the nature of the data is determined by the caller).
-//     For example, the fragment 'location.htm' defines 'initialize' to react to zip-code input.
+//     For example, the fragment 'location.htm' defines 'onShow' to react to zip-code input.
 
 // Loads a fragment
 //   String path      : The path to the fragment to load, WITHOUT the prefix 'frag/' and suffix '.htm'
@@ -22,13 +22,11 @@ loadFragment = function( path, success, error ) {
   });
 };
 
-
-
 var Fragment = function( path, onSuccess, onFail ) {
   // save the path to the fragment
   this.path = path;
   //this.html       is used to store jQuery representation of the fragment
-  //this._callbacks is used to store fragment specific loading operations
+  //this._userData  is used to store fragment specific loading operations
   
   // begin loading
   this.load( onSuccess, onFail );
@@ -56,42 +54,52 @@ Fragment.prototype = {
       var html = _this.html = $( data ),
           cb;
 
-      // find event callbacks
-      _this._findCallbacks();
+      // find event callbacks and data
+      _this._findData();
 
       // invoke the fragment's onLoad callback, if it was given
-      if( cb = _this._callbacks.onLoad ) {
-        cb( html );
-      }
+      _this.invokeCallback("onLoad");
 
-      // call each of the invoked callbacks
-      /*( isArray( callbacks ) ? callbacks : [ callbacks ] ).forEach(function( cb ) {
-        cb( html );
-      });*/
+      // finally, invoke the given callback (this *will* be a function)
       callback( _this );
     };
   },
 
-  _findCallbacks: function() {
-    var callbacksScript = this.html.filter(function() { return $(this).is("[data-fragment-callbacks]"); }),
-        evalString = 
-          "(function( $, React, fragment ) {"
-        +   (callbacksScript.text() || "")
-        +   "return fragment;"
-        + "})( $, React, {} )";
+  _findData: function() {
+    var dataScript = this.html.filter(function() { return $(this).is("[data-fragment-user-data]"); }),
+        evalString,
+        dependencies,
+        userData = {};
     
-    // search for the callbacks (if any are given)
-    this._callbacks = eval( evalString );
+    // no <script> found, just return empty object
+    if( !dataScript.length ) return {};
+    
+    // otherwise, create the eval string
+    //dependencies = 
+    evalString = 
+      "(function( $, React, fragment ) {"
+    +   (dataScript.text() || "")
+    + "})( $, React, userData )";
+
+    // evaluate the string
+    eval( evalString );
+    console.log(userData);
+    
+    // reference for callbacks and data the fragment creator may have assigned
+    // copy it, so that it can't be changed after execution of the statement
+    userData = this._userData = $.extend( {}, userData );
+    userData.data = userData.data || {};
+
+    console.log("Just found data for '" + this.path + "':", this._userData.data );
 
     // remove the callbacks script
-    //console.log("About to remove", callbacksScript);
-    callbacksScript.remove();
+    dataScript.remove();
   },
   
   invokeCallback: function( which, data ) {
-    var cb = this._callbacks[ which ];
+    var cb = this._userData[ which ];
     //console.log("About to invoke ", which, " with data ", data);
-    cb && cb( this.html, data || {} );
+    (typeof cb === "function") && cb( this.html, data || {} );
   }
 };
 
@@ -173,7 +181,7 @@ FragmentContainer.prototype = {
       _this._showFragment( fragment, data );
 
       // call the given handler
-      onSuccess && onSuccess( fragment._callbacks.data ); // TO DO! Fix _callbacks.data to be just _userData
+      onSuccess && onSuccess( fragment._userData.data ); // TO DO! Fix _userData.data to be just _userData
     };
   },
 
@@ -201,7 +209,7 @@ FragmentContainer.prototype = {
     if( this._current && (this._current.path === path) ) {
       // do nothing if the requested fragment is already loaded
       this._current.invokeCallback("onShow", data );
-      onSuccess && onSuccess( this._current._callbacks.data );
+      onSuccess && onSuccess( this._current._userData.data );
     } else {
       // load the given path
       this._load( 
