@@ -1,96 +1,33 @@
 var $              = require("jquery"),
     FragmentLoader = require("FragmentLoader"),
     loader, 
-    history = window.history,
-    INITIAL_FRAGMENT; // (potentially) manipulated by server
-
-var showFragment = function( name, pushState, noAnimate ) {
-  // TODO: If noAnimate = false, wait to replace fragmentContainer's content
-  //       until fade out animation has stopped
-
-  // do some stuff to remove the old fragment
-  if( !noAnimate ) {
-    fragmentContainer.animate({
-      opacity: 0
-    }, 300 );
-  } else {
-    // no animation, empty now
-    fragmentContainer.empty();
-  }
-
-  // load the new fragment, display it if possible
-  loadFragment( name, function( html, error ) {
-    if( html ) {
-      // empty the fragment container, add the new fragment
-      fragmentContainer
-        .empty()
-        .append( html )
-        .attr("data-fragment", name );
-
-      // if allowed, animate
-      if( !noAnimate ) {
-        fragmentContainer.animate({
-          opacity: 1
-        }, 300 );
-      }
-
-      // add this to the history (if requested)
-      pushState && history.pushState( { fragment: name }, "", name );
-    } else {
-      console.log("Error retrieving fragment '" + name + "': " + error );
-      if( fragmentContainer.attr("data-fragment") === "not-found" ) {
-        // already loaded 404, just reshow it
-        if( !noAnimate ) { 
-          fragmentContainer.animate({
-            opacity: 1
-          }, 300 );
-        }
-      } else if( name !== "not-found" ) {
-        // otherwise load 404 if this request wasn't for 404
-        showFragment( "not-found", true );
-      }
-    }
-  });
-};
-
-var hidePopups = function( element ) {
-  // find the element to save
-  element = $( element ).parents("[data-popup-container], .popup");
-
-  // use the body if no element given
-  $( document.body )
-    .find(".show-popup, .popup.shown")
-    .not( element )
-    .removeClass("show-popup shown");
-}
+    history = window.history;
 
 // when the document is ready...
 $(function() {
   // add necessary classes to nav items and menu items
-  $(".top-nav").each(function() {
-    var nav = $(this);
+  $(".top-nav ul").each(function() {
+    var list = $(this);
     
     // <a> tags are 'nav-link'
-    nav.find("a").addClass("nav-link");
+    list.find("a").addClass("nav-link");
 
     // mark those .nav-item without .nav-link
-    nav.find(".nav-item:not(:has(> .nav-link))").addClass("no-link");
+    list.find(".nav-item:not(:has(> .nav-link))").addClass("no-link");
 
     // also, mark those .menu-item without link
-    nav.find(".menu-item:not(:has(.nav-link))").addClass("no-link");
+    list.find(".menu-item:not(:has(.nav-link))").addClass("no-link");
   });
 
   // save a reference to the fragment container
   loader = new FragmentLoader( $("#fragment-container") );
 
-  // initially, show the 'index' fragment (last 'true' is to prevent animation)
-  INITIAL_FRAGMENT = INITIAL_FRAGMENT || window.location.hash.substring( 1 ) || "index";
-  //showFragment( INITIAL_FRAGMENT, false, true );
-  loader.show( INITIAL_FRAGMENT, function() {
+  // initially, show the requested fragment (indicated by #) or the 'index' fragment
+  loader.show( window.location.hash.substring( 1 ) || "index", function() {
     history.replaceState(
-      { fragment: INITIAL_FRAGMENT },
+      { fragment: window.location.hash.substring( 1 ) || "index" },
       "",
-      INITIAL_FRAGMENT === "index" ? "/#" : "/#" + INITIAL_FRAGMENT
+      (window.location.hash.substring( 1 ) || "index") === "index" ? "/#" : "/#" + window.location.hash.substring( 1 )
     );
   });
 
@@ -206,18 +143,4 @@ $(function() {
     });
     this.val("");
   });
-
-  // for #service-provider-login-link and #individual-login-link, do popup stuff
-  $("#service-provider-login-link").add("#individual-login-link").click(function( ev ) {
-    // TODO -- make popups disappear on click outside
-    $( this ).parent().toggleClass("show-popup");
-  });
-
-  // on body click, hide popups
-  $( document.body ).click(function( ev ) { 
-    hidePopups( ev.target );
-  });
-
-  // show initial fragment, if any
-  window.location.href.split("#");
 });

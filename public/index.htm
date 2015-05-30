@@ -2,12 +2,43 @@
 <html>
 <head>
   <title>Food Drive 365</title>
+
+  <!-- make mobile devices play nice -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- get a pretty font and use nice styles -->
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/main.css" />
-  <script src="js/jspm-packages/system.js"></script>
+
+  <!-- change Android Chrome's bar to be a cool color -->
+  <meta name="theme-color" content="#4680c6">
+
+  <!-- favicon stuff, see http://realfavicongenerator.net/favicon?file_id=p19m6ka3am18fqtmkct7gn1k736#.VWOq-dNViko -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-title" content="FD365">
+  <meta name="application-name" content="FD365">
+  <meta name="msapplication-TileColor" content="#00aba9">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- scripting -->
+  <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
-  <script>System.import("main");</script>
+  <script type="text/javascript">System.import("main");</script>
 </head>
 <body>
   <!-- begin header -->
@@ -18,45 +49,27 @@
       <button class="nav-button"><span class="nav-button-inner"></span></button>
 
       <div class="link-container">
-        <a href="/contact" class="button">Contact Us</a>
-        <div class="positioning-root" data-popup-container>
-          <a id="service-provider-login-link" class="button">Service Provider Login</a>
-          <div id="service-provider-login-popup" class="popup">
-            <input class="text-input" type="text"     placeholder="Center ID" />
-            <input class="text-input" type="password" placeholder="Password" />
-            <button class="button">Hey</button>
-            <p>Forgot your 
-              <a href="/forgot-login" data-fragment-data="{ type: 'provider', forgot: 'centerID' }">center ID</a>
-              or
-              <a href="/forgot-login" data-fragment-data="{ type: 'provider', forgot: 'password' }">password</a>?
-            </p>
-          </div>
-        </div>
-        <div class="positioning-root" data-popup-container>
-          <a id="individual-login-link" class="button">Individual Login</a>
-          <div class="popup right">
-            <input class="text-input" type="text"     placeholder="Username" />
-            <input class="text-input" type="password" placeholder="Password" />
-            <p>Forgot your 
-              <a href="/forgot-login" data-fragment-data="{ type: 'user', forgot: 'username' }">username</a>
-              or
-              <a href="/forgot-login" data-fragment-data="{ type: 'user', forgot: 'password' }">password</a>?
-            </p>
-          </div>
-        </div>
+        <a href="/contact"  class="button">Contact Us</a>
+        <a href="/login"    class="button">Log In</a>
+        <a href="/register" class="button">Register</a>
       </div>
 
       <div class="social-container">
         <img class="social facebook" src="image/social/facebook-icon.png" />
-        <img class="social twitter" src="image/social/twitter-icon.png" />
+        <img class="social linkedin" src="image/social/linkedin-icon.png" />
         <img class="social google" src="image/social/google-icon.png" />
       </div>
     </div>
 
     <nav class="top-nav" id="top-nav">
+      <div class="top-nav-link-container">
+        <a href="/contact"  class="button">Contact Us</a>
+        <a href="/login"    class="button">Log In</a>
+        <a href="/register" class="button">Register</a>
+      </div>
       <ul>
         <li class="nav-item">
-          <a href="/about">About</a>
+          <a href="/about">About Us</a>
           <ul class="drop-menu">
             <li class="menu-item"><a href="/about/why-we-exist">Why We Exist</a></li>
             <li class="menu-item"><a href="/about/who-we-help">Who We Help</a></li>

@@ -55,7 +55,7 @@ Fragment.prototype = {
           cb;
 
       // find event callbacks and data
-      _this._findData();
+      _this._userData = _this._findData();
 
       // invoke the fragment's onLoad callback, if it was given
       _this.invokeCallback("onLoad");
@@ -72,7 +72,7 @@ Fragment.prototype = {
         userData = {};
     
     // no <script> found, just return empty object
-    if( !dataScript.length ) return {};
+    if( !dataScript.length ) return { data: {} };
     
     // otherwise, create the eval string
     //dependencies = 
@@ -83,17 +83,20 @@ Fragment.prototype = {
 
     // evaluate the string
     eval( evalString );
-    console.log(userData);
+    console.log("User data is: ", userData);
     
     // reference for callbacks and data the fragment creator may have assigned
     // copy it, so that it can't be changed after execution of the statement
-    userData = this._userData = $.extend( {}, userData );
+    userData = $.extend( {}, userData );
     userData.data = userData.data || {};
 
-    console.log("Just found data for '" + this.path + "':", this._userData.data );
+    //console.log("Just found data for '" + this.path + "':", this._userData.data );
 
     // remove the callbacks script
     dataScript.remove();
+    
+    // finally, return the data
+    return userData;
   },
   
   invokeCallback: function( which, data ) {
