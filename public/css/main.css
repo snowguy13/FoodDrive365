@@ -312,8 +312,6 @@ kbd {
   left: 0;
   top: 100%;
   box-sizing: border-box;
-  /*width: 100%;
-  min-width: 200px;*/
   width: 200px;
   margin: 0;
   padding: 5px 0;
