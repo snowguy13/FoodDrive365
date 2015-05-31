@@ -117,6 +117,11 @@ kbd {
   padding: 5px 8px;
 }
 
+.link-container .button:active {
+  margin: 4px 4px -1px -1px;
+  padding: 4px 7px;
+}
+
 .top-nav-link-container {
   display: none;
   text-align: right;
@@ -163,10 +168,6 @@ kbd {
   background-color: #4680c6;
 }
 
-.show-nav .nav-button-inner {
-  background-color: transparent;
-}
-
 .nav-button-inner::before,
 .nav-button-inner::after {
   transition-property: top, bottom, background-color, box-shadow, transform;
@@ -192,6 +193,10 @@ kbd {
 .nav-button:active .nav-button-inner::after {
   transition-duration: 0s;
   background-color: #CCC;
+}
+
+.show-nav .nav-button-inner {
+  background-color: transparent;
 }
 
 .show-nav .nav-button-inner::before,
@@ -572,6 +577,11 @@ body.full .main .section {
   font-size: 20px;
 }
 
+.section-button:active {
+  margin: -1px;
+  padding: 14px;
+}
+
 .link-container .button,
 .section-button {
   font-weight: 100;
@@ -592,7 +602,7 @@ body.full .main .section {
   text-decoration: none;
   color: #3f73b2;
   background-color: white;
-  outline: 2px solid #3f73b2;
+  border: 2px solid #3f73b2;
 }
 
 .text-input {
