@@ -24,6 +24,7 @@ $(function() {
 
   // initially, show the requested fragment (indicated by #) or the 'index' fragment
   loader.show( window.location.hash.substring( 1 ) || "index", function() {
+    $("#main-loading-box").remove();
     history.replaceState(
       { fragment: window.location.hash.substring( 1 ) || "index" },
       "",
