@@ -127,28 +127,6 @@ kbd {
   margin: 5px;
 }
 
-.big-button {
-  display: inline-block;
-  margin: 5px auto;
-  padding: 6px 10px;
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: 100;
-  color: white;
-  background-color: #4680c6;
-  border: none;
-}
-
-.link-container .big-button {
-  display: block;
-  width: auto;
-}
-
-.positioning-root {
-  position: relative;
-  display: inline-block;
-}
-
 .nav-button {
   cursor: pointer;
   display: none;
@@ -161,7 +139,6 @@ kbd {
   border: none;
 }
 
-.nav-button:hover,
 .nav-button:focus {
   outline: none;
 }
@@ -203,11 +180,6 @@ kbd {
   background-color: white;
 }
 
-.nav-button:active .nav-button-inner::before,
-.nav-button:active .nav-button-inner::after {
-  transition-duration: 0s;
-}
-
 .nav-button-inner::before {
   top: 3px;
 }
@@ -218,7 +190,8 @@ kbd {
 
 .nav-button:active .nav-button-inner::before,
 .nav-button:active .nav-button-inner::after {
-  background-color: #DDD;
+  transition-duration: 0s;
+  background-color: #CCC;
 }
 
 .show-nav .nav-button-inner::before,
