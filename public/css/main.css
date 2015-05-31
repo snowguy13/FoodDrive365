@@ -1,3 +1,71 @@
+@keyframes big-loading-square {
+  0% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+
+  5% {
+    background-color: #1c314f;
+    transform: scale(1.2);
+  }
+
+  100% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes big-loading-square {
+  0% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+
+  5% {
+    background-color: #1c314f;
+    transform: scale(1.2);
+  }
+
+  100% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+}
+
+@-moz-keyframes big-loading-square {
+  0% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+
+  5% {
+    background-color: #1c314f;
+    transform: scale(1.2);
+  }
+
+  100% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+}
+
+@-o-keyframes big-loading-square {
+  0% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+
+  5% {
+    background-color: #1c314f;
+    transform: scale(1.2);
+  }
+
+  100% {
+    background-color: #4680c6;
+    transform: scale(1);
+  }
+}
+
 body {
   position: relative;
   min-height: 100%;
@@ -378,11 +446,64 @@ kbd {
 .main {
   box-sizing: border-box;
   height: 100%;
-  /*min-height: 100%;*/
   padding-top: 90px;
   overflow-y: visible;
   margin: 0 auto;
   text-align: center;
+}
+
+.big-loading-box {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.big-loading-box[class^="loading-square"] {
+  -webkit-animation: big-loading-square 4s infinite;
+  animation: big-loading-square 4s infinite;
+  width: 40px;
+  height: 40px;
+}
+
+.big-loading-box .text-square {
+  width: 40px;
+  height: 40px;
+}
+
+.big-loading-box .loading-square-2 {
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+}
+
+.big-loading-box .loading-square-3 {
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+.big-loading-box .loading-square-4 {
+  -webkit-animation-delay: 1.5s;
+  animation-delay: 1.5s;
+}
+
+.big-loading-box .loading-square-5 {
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+}
+
+.big-loading-box .loading-square-6 {
+  -webkit-animation-delay: 2.5s;
+  animation-delay: 2.5s;
+}
+
+.big-loading-box .loading-square-7 {
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
+}
+
+.big-loading-box .loading-square-8 {
+  -webkit-animation-delay: 3.5s;
+  animation-delay: 3.5s;
 }
 
 /* medium sized: shift nav bar to right */
