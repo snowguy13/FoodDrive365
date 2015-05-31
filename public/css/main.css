@@ -459,7 +459,7 @@ kbd {
   padding: 20px 0;
 }
 
-.big-loading-box[class^="loading-square"] {
+.big-loading-box [class^="loading-square"] {
   -webkit-animation: big-loading-square 4s infinite;
   animation: big-loading-square 4s infinite;
   width: 40px;
