@@ -21,7 +21,8 @@ var PartnerGrid = React.createClass({displayName: 'PartnerGrid',
       return (React.DOM.li({key: i, className: "partner", onClick:  this.openPartnerPage( partner.url) }, 
         React.DOM.div({className: "image", style:  this.makeStyleObject( partner.image) }), 
         React.DOM.div({className: "text"}, 
-          React.DOM.h4({className: "name"},  partner.name)
+          React.DOM.h4({className: "name"},  partner.name), 
+          "/*", React.DOM.p({className: "description"},  partner.description), "*/"
         )
       ));
     }, this);

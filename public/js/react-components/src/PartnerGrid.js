@@ -22,7 +22,6 @@ var PartnerGrid = React.createClass({
         <div className="image" style={ this.makeStyleObject( partner.image ) } />
         <div className="text">
           <h4 className="name">{ partner.name }</h4>
-          <p className="description">{ partner.description }</p>
         </div>
       </li>);
     }, this);
