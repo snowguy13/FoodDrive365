@@ -502,7 +502,7 @@ kbd {
 }
 
 /* medium sized: shift nav bar to right */
-@media(max-width: 1075px) {
+@media(max-width: 1110px) {
   .top-nav {
     text-align: right;
   }
@@ -741,6 +741,8 @@ body.full .main .section {
   outline: none;
 }
 
+/** start stuff to get rid of */
+
 .split {
   display: -webkit-flex;
   display: flex;
@@ -781,6 +783,8 @@ body.full .main .section {
     margin: 0 0 20px 0;
   }
 }
+
+/** end stuff to get rid of */
 
 .fragment-path {
   color: #284671;
@@ -848,6 +852,8 @@ body.full .main .section {
   max-height: 150px;
 }
 
+/** start stuff to get rid of */
+
 .list {
   padding-left: 0;
   text-align: left;
@@ -863,6 +869,51 @@ body.full .main .section {
 
 .block-list > li {
   display: block;
+}
+
+/** end stuff to get rid of */
+
+.perks-list {
+  padding: 0;
+  margin: 10px 0;
+  list-style: none;
+  text-align: center;
+}
+
+.perks-list .perk {
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: top;
+  width: 24%;
+  padding: 5px;
+}
+
+.perks-list .perk-inner {
+  padding: 15px;
+  background-color: #EEE;
+  color: black;
+  font-weight: 300;
+  border: 1px solid #999;
+  border-radius: 3px;
+}
+
+.perks-list .perk strong {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 20px;
+  text-shadow: 0 0 10px #DDD;
+}
+
+@media(max-width: 820px) {
+  .perks-list .perk {
+    width: 49%;
+  }
+}
+
+@media(max-width: 670px) {
+  .perks-list .perk {
+    width: 100%;
+  }
 }
 
 .top-donors {
